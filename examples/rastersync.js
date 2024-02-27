@@ -13,6 +13,8 @@ import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
 import {OLCS_ION_TOKEN} from './_common.js';
 
+const Cesium = window.Cesium;
+Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 
 const view = new olView({
   center: transform([-112.2, 36.06], 'EPSG:4326', 'EPSG:3857'),
@@ -25,7 +27,7 @@ const layer0 = new olLayerTile({
 
 const key = 'pk.eyJ1IjoiZ2JvMiIsImEiOiJjazFraHV4N3gwZHliM2JucHYxdTNnNXh1In0.tzs3TxoVCaMNQf455mh-3w';
 const tileJsonSource = new olSourceTileJSON({
-  url: 'https://api.tiles.mapbox.com/v4/mapbox.world-borders-light.json?access_token=' + key,
+  url: 'https://api.tiles.mapbox.com/v4/mapbox.world-borders-light.json?secure&access_token=' + key,
   crossOrigin: 'anonymous'
 });
 
@@ -38,7 +40,6 @@ const ol2d = new olMap({
   view,
 });
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol3d = new OLCesium({map: ol2d, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
 Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
@@ -99,3 +100,8 @@ window['global'] = {
   layer0,
   layer2
 };
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./rastersync.js');
